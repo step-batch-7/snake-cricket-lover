@@ -3,44 +3,6 @@ const NORTH = 1;
 const WEST = 2;
 const SOUTH = 3;
 
-class Snake {
-  constructor(positions, direction, type) {
-    this.positions = positions.slice();
-    this.direction = direction;
-    this.type = type;
-    this.previousTail = [0, 0];
-  }
-
-  get location() {
-    return this.positions.slice();
-  }
-
-  get species() {
-    return this.type;
-  }
-
-  get head() {
-    return this.positions[this.positions.length - 1];
-  }
-
-  turnLeft() {
-    this.direction.turnLeft();
-  }
-
-  move() {
-    const [headX, headY] = this.positions[this.positions.length - 1];
-    this.previousTail = this.positions.shift();
-
-    const [deltaX, deltaY] = this.direction.delta;
-
-    this.positions.push([headX + deltaX, headY + deltaY]);
-  }
-
-  grow() {
-    this.positions.unshift(this.previousTail);
-  }
-}
-
 const NUM_OF_COLS = 100;
 const NUM_OF_ROWS = 60;
 
