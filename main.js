@@ -106,10 +106,17 @@ const setup = game => {
   drawSnake(game.ghostSnake);
 };
 
+const updateScoreBoard = function(score) {
+  const scoreCard = document.getElementById('scoreCard');
+  scoreCard.innerText = score;
+};
+
 const updateGameStatus = game => {
   if (game.hasFoodEaten()) {
     generateNewFood(game);
     game.snake.grow();
+    const score = game.getUpdatedScore();
+    updateScoreBoard(score);
   }
   moveAndDrawSnake(game.snake);
   moveAndDrawSnake(game.ghostSnake);

@@ -26,3 +26,17 @@ h1 {
 .food {
   background-color: red;
 }
+#scoreBoard {
+  width: 100px;
+  font-family: sans-serif;
+  /* border: 1px solid black; */
+  /* border-radius: 9px; */
+  /* margin: 0 auto; */
+  /* display: flex; */
+  font-size: larger;
+  /* text-align: left; */
+  /* background-color: cornsilk; */
+}
+
+#scoreCard {
+}
