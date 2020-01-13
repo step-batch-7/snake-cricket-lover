@@ -211,7 +211,6 @@ const main = function() {
 
   setup(game);
 
-  // setInterval(drawFood, 100, game);
   setInterval(animateSnakes, 100, game.snake, game.ghostSnake, game);
   setInterval(randomlyTurnSnake, 500, game.ghostSnake);
 };
