@@ -65,13 +65,6 @@ class Food {
     this.rowId = rowId;
   }
 
-  changePositions() {
-    [this.colId, this.rowId] = [
-      Math.round(Math.random() * 100),
-      Math.round(Math.random() * 60)
-    ];
-  }
-
   get position() {
     return [this.colId, this.rowId];
   }
@@ -137,10 +130,14 @@ const removePreviousFood = function(position) {
   cell.classList.remove('food');
 };
 
-const generateNewFood = function(food) {
-  removePreviousFood(food.position);
-  food.changePositions();
-  drawFood(food);
+const generateNewFood = function(game) {
+  removePreviousFood(game.food.position);
+  const [foodX, foodY] = [
+    Math.round(Math.random() * NUM_OF_COLS),
+    Math.round(Math.random() * NUM_OF_ROWS)
+  ];
+  game.food = new Food(foodX, foodY);
+  drawFood(game.food);
 };
 
 const drawFood = function(food) {
@@ -192,7 +189,7 @@ const setup = game => {
 
 const updateGameStatus = game => {
   if (game.hasFoodEaten()) {
-    generateNewFood(game.food);
+    generateNewFood(game);
     game.snake.grow();
   }
   moveAndDrawSnake(game.snake);
