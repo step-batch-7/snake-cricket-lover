@@ -137,15 +137,14 @@ const removePreviousFood = function(position) {
   cell.classList.remove('food');
 };
 
-const drawFood = function(game) {
-  let [foodX, foodY] = game.food.position;
-  if (game.hasFoodEaten()) {
-    removePreviousFood([foodX, foodY]);
-    game.food.changePositions();
-    [foodX, foodY] = game.food.position;
-    game.snake.grow();
-  }
+const generateNewFood = function(food) {
+  removePreviousFood(food.position);
+  food.changePositions();
+  drawFood(food);
+};
 
+const drawFood = function(food) {
+  let [foodX, foodY] = food.position;
   const cell = getCell(foodX, foodY);
   cell.classList.add('food');
 };
@@ -185,16 +184,19 @@ const initGhostSnake = () => {
 const setup = game => {
   attachEventListeners(game.snake);
   createGrids();
-  drawFood(game);
+  drawFood(game.food);
 
   drawSnake(game.snake);
   drawSnake(game.ghostSnake);
 };
 
-const animateSnakes = (snake, ghostSnake, game) => {
-  moveAndDrawSnake(snake);
-  moveAndDrawSnake(ghostSnake);
-  drawFood(game);
+const updateGameStatus = game => {
+  if (game.hasFoodEaten()) {
+    generateNewFood(game.food);
+    game.snake.grow();
+  }
+  moveAndDrawSnake(game.snake);
+  moveAndDrawSnake(game.ghostSnake);
 };
 
 const randomlyTurnSnake = snake => {
@@ -212,6 +214,6 @@ const main = function() {
 
   setup(game);
 
-  setInterval(animateSnakes, 100, game.snake, game.ghostSnake, game);
+  setInterval(updateGameStatus, 100, game);
   setInterval(randomlyTurnSnake, 500, game.ghostSnake);
 };
