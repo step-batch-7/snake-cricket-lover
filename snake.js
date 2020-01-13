@@ -38,6 +38,9 @@ class Snake {
     return this.type;
   }
 
+  get head() {
+    return this.positions[this.positions.length - 1];
+  }
   turnLeft() {
     this.direction.turnLeft();
   }
@@ -49,6 +52,55 @@ class Snake {
     const [deltaX, deltaY] = this.direction.delta;
 
     this.positions.push([headX + deltaX, headY + deltaY]);
+  }
+}
+
+class Food {
+  constructor(colId, rowId) {
+    this.colId = colId;
+    this.rowId = rowId;
+  }
+
+  set position(position) {
+    [this.colId, this.rowId] = position;
+  }
+
+  get position() {
+    return [this.colId, this.rowId];
+  }
+}
+
+class Game {
+  constructor(snake, ghostSnake, food) {
+    this.snake = snake;
+    this.ghostSnake = ghostSnake;
+    this.food = food;
+  }
+
+  getNewPositions(foodX, foodY) {
+    this.food.position = [
+      foodX + Math.round(Math.random() * 10),
+      foodY + Math.round(Math.random() * 6)
+    ];
+    return this.food.position;
+  }
+
+  get foodLocation() {
+    let [foodX, foodY] = this.food.position;
+    if (this.hasFoodEaten()) {
+      const [x, y] = this.getNewPositions(foodX, foodY);
+      removePreviousFood([foodX, foodY]);
+
+      const food = new Food(x, y);
+      return food.position;
+    }
+    return [foodX, foodY];
+  }
+
+  hasFoodEaten() {
+    const [foodX, foodY] = this.food.position;
+    const [snakeX, snakeY] = this.snake.head;
+    return foodX === snakeX && foodY === snakeY;
   }
 }
 
@@ -92,6 +144,18 @@ const drawSnake = function(snake) {
   });
 };
 
+const removePreviousFood = function(position) {
+  const [colId, rowId] = position;
+  const cell = getCell(colId, rowId);
+  cell.classList.remove('food');
+};
+
+const drawFood = function(game) {
+  let [colId, rowId] = game.foodLocation;
+  const cell = getCell(colId, rowId);
+  cell.classList.add('food');
+};
+
 const handleKeyPress = snake => {
   snake.turnLeft();
 };
@@ -106,41 +170,54 @@ const attachEventListeners = snake => {
   document.body.onkeydown = handleKeyPress.bind(null, snake);
 };
 
-const main = function() {
-  const snake = new Snake(
-    [
-      [40, 25],
-      [41, 25],
-      [42, 25]
-    ],
-    new Direction(EAST),
-    'snake'
-  );
+const initSnake = () => {
+  const snakePosition = [
+    [40, 25],
+    [41, 25],
+    [42, 25]
+  ];
+  return new Snake(snakePosition, new Direction(EAST), 'snake');
+};
 
-  const ghostSnake = new Snake(
-    [
-      [40, 30],
-      [41, 30],
-      [42, 30]
-    ],
-    new Direction(SOUTH),
-    'ghost'
-  );
+const initGhostSnake = () => {
+  const ghostSnakePosition = [
+    [40, 30],
+    [41, 30],
+    [42, 30]
+  ];
+  return new Snake(ghostSnakePosition, new Direction(SOUTH), 'ghost');
+};
 
-  attachEventListeners(snake);
+const setup = game => {
+  attachEventListeners(game.snake);
   createGrids();
-  drawSnake(snake);
-  drawSnake(ghostSnake);
+  drawFood(game);
 
-  setInterval(() => {
-    moveAndDrawSnake(snake);
-    moveAndDrawSnake(ghostSnake);
-  }, 200);
+  drawSnake(game.snake);
+  drawSnake(game.ghostSnake);
+};
 
-  setInterval(() => {
-    let x = Math.random() * 100;
-    if (x > 50) {
-      ghostSnake.turnLeft();
-    }
-  }, 500);
+const animateSnakes = (snake, ghostSnake) => {
+  moveAndDrawSnake(snake);
+  moveAndDrawSnake(ghostSnake);
+};
+
+const randomlyTurnSnake = snake => {
+  let x = Math.random() * 100;
+  if (x > 50) {
+    snake.turnLeft();
+  }
+};
+
+const main = function() {
+  const snake = initSnake();
+  const ghostSnake = initGhostSnake();
+  const food = new Food(5, 5);
+  const game = new Game(snake, ghostSnake, food);
+
+  setup(game);
+
+  setInterval(drawFood, 100, game);
+  setInterval(animateSnakes, 100, game.snake, game.ghostSnake);
+  setInterval(randomlyTurnSnake, 500, game.ghostSnake);
 };
