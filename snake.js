@@ -53,6 +53,10 @@ class Snake {
 
     this.positions.push([headX + deltaX, headY + deltaY]);
   }
+
+  grow() {
+    this.positions.unshift(this.previousTail);
+  }
 }
 
 class Food {
@@ -61,8 +65,11 @@ class Food {
     this.rowId = rowId;
   }
 
-  set position(position) {
-    [this.colId, this.rowId] = position;
+  changePositions() {
+    [this.colId, this.rowId] = [
+      Math.round(Math.random() * 100),
+      Math.round(Math.random() * 60)
+    ];
   }
 
   get position() {
@@ -75,14 +82,6 @@ class Game {
     this.snake = snake;
     this.ghostSnake = ghostSnake;
     this.food = food;
-  }
-
-  updateFoodPositions(foodX, foodY) {
-    this.food.position = [
-      foodX + Math.round(Math.random() * 10),
-      foodY + Math.round(Math.random() * 6)
-    ];
-    return this.food.position;
   }
 
   hasFoodEaten() {
@@ -142,7 +141,9 @@ const drawFood = function(game) {
   let [foodX, foodY] = game.food.position;
   if (game.hasFoodEaten()) {
     removePreviousFood([foodX, foodY]);
-    [foodX, foodY] = game.updateFoodPositions(foodX, foodY);
+    game.food.changePositions();
+    [foodX, foodY] = game.food.position;
+    game.snake.grow();
   }
 
   const cell = getCell(foodX, foodY);
