@@ -41,31 +41,6 @@ class Snake {
   }
 }
 
-class Food {
-  constructor(colId, rowId) {
-    this.colId = colId;
-    this.rowId = rowId;
-  }
-
-  get position() {
-    return [this.colId, this.rowId];
-  }
-}
-
-class Game {
-  constructor(snake, ghostSnake, food) {
-    this.snake = snake;
-    this.ghostSnake = ghostSnake;
-    this.food = food;
-  }
-
-  hasFoodEaten() {
-    const [foodX, foodY] = this.food.position;
-    const [snakeX, snakeY] = this.snake.head;
-    return foodX === snakeX && foodY === snakeY;
-  }
-}
-
 const NUM_OF_COLS = 100;
 const NUM_OF_ROWS = 60;
 
