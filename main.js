@@ -130,6 +130,6 @@ const main = function() {
 
   setup(game);
 
-  setInterval(updateGameStatus, 100, game);
+  setInterval(updateGameStatus, 200, game);
   setInterval(randomlyTurnSnake, 500, game.ghostSnake);
 };
