@@ -77,24 +77,12 @@ class Game {
     this.food = food;
   }
 
-  getNewPositions(foodX, foodY) {
+  updateFoodPositions(foodX, foodY) {
     this.food.position = [
       foodX + Math.round(Math.random() * 10),
       foodY + Math.round(Math.random() * 6)
     ];
     return this.food.position;
-  }
-
-  get foodLocation() {
-    let [foodX, foodY] = this.food.position;
-    if (this.hasFoodEaten()) {
-      const [x, y] = this.getNewPositions(foodX, foodY);
-      removePreviousFood([foodX, foodY]);
-
-      const food = new Food(x, y);
-      return food.position;
-    }
-    return [foodX, foodY];
   }
 
   hasFoodEaten() {
@@ -151,8 +139,13 @@ const removePreviousFood = function(position) {
 };
 
 const drawFood = function(game) {
-  let [colId, rowId] = game.foodLocation;
-  const cell = getCell(colId, rowId);
+  let [foodX, foodY] = game.food.position;
+  if (game.hasFoodEaten()) {
+    removePreviousFood([foodX, foodY]);
+    [foodX, foodY] = game.updateFoodPositions(foodX, foodY);
+  }
+
+  const cell = getCell(foodX, foodY);
   cell.classList.add('food');
 };
 
@@ -197,9 +190,10 @@ const setup = game => {
   drawSnake(game.ghostSnake);
 };
 
-const animateSnakes = (snake, ghostSnake) => {
+const animateSnakes = (snake, ghostSnake, game) => {
   moveAndDrawSnake(snake);
   moveAndDrawSnake(ghostSnake);
+  drawFood(game);
 };
 
 const randomlyTurnSnake = snake => {
@@ -217,7 +211,7 @@ const main = function() {
 
   setup(game);
 
-  setInterval(drawFood, 100, game);
-  setInterval(animateSnakes, 100, game.snake, game.ghostSnake);
+  // setInterval(drawFood, 100, game);
+  setInterval(animateSnakes, 100, game.snake, game.ghostSnake, game);
   setInterval(randomlyTurnSnake, 500, game.ghostSnake);
 };
