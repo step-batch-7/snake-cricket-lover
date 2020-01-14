@@ -45,8 +45,6 @@ class Snake {
 
   hasTouchedItself() {
     const otherParts = this.positions.slice(0, this.positions.length - 1);
-    return otherParts.some(
-      cell => cell[0] === this.head[0] && cell[1] === this.head[1]
-    );
+    return otherParts.some(cell => areCellsEqual(cell, this.head));
   }
 }

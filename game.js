@@ -1,3 +1,7 @@
+const areCellsEqual = function(cell1, cell2) {
+  return cell1[0] === cell2[0] && cell1[1] === cell2[1];
+};
+
 class Game {
   constructor(snake, ghostSnake, food) {
     this.snake = snake;
@@ -7,11 +11,8 @@ class Game {
   }
 
   hasFoodEaten() {
-    const [foodX, foodY] = this.food.position;
-    const [snakeX, snakeY] = this.snake.head;
-    return foodX === snakeX && foodY === snakeY;
+    return areCellsEqual(this.food.position, this.snake.head);
   }
-
   getUpdatedScore() {
     this.score += 1;
     return this.score;
