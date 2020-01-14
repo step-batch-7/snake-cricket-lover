@@ -107,8 +107,8 @@ const setup = game => {
 };
 
 const updateScoreBoard = function(score) {
-  const scoreCard = document.getElementById('scoreCard');
-  scoreCard.innerText = score;
+  const scoreBoard = document.getElementById('scoreBoard');
+  scoreBoard.innerText = `Score is: ${score}`;
 };
 
 const updateGameStatus = game => {
