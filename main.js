@@ -114,7 +114,6 @@ const setup = game => {
   attachEventListeners(game.snake);
   createGrids();
   drawFood(game.food);
-
   drawSnake(game.snake);
   drawSnake(game.ghostSnake);
 };
@@ -131,7 +130,7 @@ const updateGameStatus = game => {
     const score = game.getUpdatedScore();
     updateScoreBoard(score);
   }
-  if (game.isOver(NUM_OF_COLS, NUM_OF_ROWS)) {
+  if (game.isOver()) {
     drawGameOverPanel();
     clearInterval(intervalId);
     return;
@@ -153,7 +152,7 @@ const main = function() {
   const snake = initSnake();
   const ghostSnake = initGhostSnake();
   const food = new Food(5, 5);
-  const game = new Game(snake, ghostSnake, food);
+  const game = new Game(snake, ghostSnake, food, { NUM_OF_COLS, NUM_OF_ROWS });
 
   setup(game);
 

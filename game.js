@@ -3,10 +3,11 @@ const areCellsEqual = function(cell1, cell2) {
 };
 
 class Game {
-  constructor(snake, ghostSnake, food) {
+  constructor(snake, ghostSnake, food, gridDimensions) {
     this.snake = snake;
     this.ghostSnake = ghostSnake;
     this.food = food;
+    this.gridDimensions = gridDimensions;
     this.score = 0;
   }
 
@@ -20,7 +21,7 @@ class Game {
 
   isOver(noOfCols, noOfRows) {
     return (
-      this.snake.hasTouchedBoundary(noOfCols, noOfRows) ||
+      this.snake.hasTouchedBoundary(this.gridDimensions) ||
       this.snake.hasTouchedItself()
     );
   }
