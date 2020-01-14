@@ -16,4 +16,11 @@ class Game {
     this.score += 1;
     return this.score;
   }
+
+  isOver(noOfCols, noOfRows) {
+    return (
+      this.snake.hasTouchedBoundary(noOfCols, noOfRows) ||
+      this.snake.hasTouchedItself()
+    );
+  }
 }

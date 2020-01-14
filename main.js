@@ -65,6 +65,19 @@ const drawFood = function(food) {
   cell.classList.add('food');
 };
 
+const clearGameBoard = function() {
+  const grid = document.getElementById('grid');
+  // console.log(document.getElementsByTagName('body')[0]);
+  document.body.removeChild(grid);
+};
+
+const gameOverPanel = function() {
+  const gameOver = document.createElement('p');
+  gameOver.innerText = 'GAME OVER';
+  gameOver.id = 'gameOver';
+  document.body.appendChild(gameOver);
+};
+
 const handleKeyPress = snake => {
   snake.turnLeft();
 };
@@ -118,6 +131,12 @@ const updateGameStatus = game => {
     const score = game.getUpdatedScore();
     updateScoreBoard(score);
   }
+  if (game.isOver(NUM_OF_COLS, NUM_OF_ROWS)) {
+    clearGameBoard();
+    gameOverPanel();
+    clearInterval(intervalId);
+    return;
+  }
   moveAndDrawSnake(game.snake);
   moveAndDrawSnake(game.ghostSnake);
 };
@@ -129,6 +148,8 @@ const randomlyTurnSnake = snake => {
   }
 };
 
+let intervalId;
+
 const main = function() {
   const snake = initSnake();
   const ghostSnake = initGhostSnake();
@@ -137,6 +158,6 @@ const main = function() {
 
   setup(game);
 
-  setInterval(updateGameStatus, 200, game);
+  intervalId = setInterval(updateGameStatus, 200, game);
   setInterval(randomlyTurnSnake, 500, game.ghostSnake);
 };
