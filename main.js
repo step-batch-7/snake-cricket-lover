@@ -65,13 +65,13 @@ const drawFood = function(food) {
   cell.classList.add('food');
 };
 
-const clearGameBoard = function() {
-  const grid = document.getElementById('grid');
-  // console.log(document.getElementsByTagName('body')[0]);
+const removeGrid = function() {
+  const grid = getGrid();
   document.body.removeChild(grid);
 };
 
-const gameOverPanel = function() {
+const drawGameOverPanel = function() {
+  removeGrid();
   const gameOver = document.createElement('p');
   gameOver.innerText = 'GAME OVER';
   gameOver.id = 'gameOver';
@@ -132,8 +132,7 @@ const updateGameStatus = game => {
     updateScoreBoard(score);
   }
   if (game.isOver(NUM_OF_COLS, NUM_OF_ROWS)) {
-    clearGameBoard();
-    gameOverPanel();
+    drawGameOverPanel();
     clearInterval(intervalId);
     return;
   }
