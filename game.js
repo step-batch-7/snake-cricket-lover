@@ -14,9 +14,18 @@ class Game {
   hasFoodEaten() {
     return areCellsEqual(this.food.position, this.snake.head);
   }
+
+  growSnake() {
+    this.snake.grow();
+  }
+
   getUpdatedScore() {
     this.score += 1;
     return this.score;
+  }
+
+  get foodPosition() {
+    return this.food.position;
   }
 
   isOver() {

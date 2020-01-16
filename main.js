@@ -50,7 +50,7 @@ const removePreviousFood = function(position) {
 };
 
 const generateNewFood = function(game) {
-  removePreviousFood(game.food.position);
+  removePreviousFood(game.foodPosition);
   const [foodX, foodY] = [
     Math.round(Math.random() * NUM_OF_COLS),
     Math.round(Math.random() * NUM_OF_ROWS)
@@ -131,7 +131,7 @@ const updateGameStatus = game => {
   }
   if (game.hasFoodEaten()) {
     generateNewFood(game);
-    game.snake.grow();
+    game.growSnake();
     const score = game.getUpdatedScore();
     updateScoreBoard(score);
   }
@@ -151,7 +151,7 @@ let intervalId;
 const main = function() {
   const snake = initSnake();
   const ghostSnake = initGhostSnake();
-  const food = new Food(5, 5);
+  const food = new Food(42, 35);
   const game = new Game(snake, ghostSnake, food, { NUM_OF_COLS, NUM_OF_ROWS });
 
   setup(game);
