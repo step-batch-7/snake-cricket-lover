@@ -19,7 +19,7 @@ class Game {
     return this.score;
   }
 
-  isOver(noOfCols, noOfRows) {
+  isOver() {
     return (
       this.snake.hasTouchedBoundary(this.gridDimensions) ||
       this.snake.hasTouchedItself()

@@ -124,16 +124,16 @@ const updateScoreBoard = function(score) {
 };
 
 const updateGameStatus = game => {
+  if (game.isOver()) {
+    drawGameOverPanel();
+    clearInterval(intervalId);
+    return;
+  }
   if (game.hasFoodEaten()) {
     generateNewFood(game);
     game.snake.grow();
     const score = game.getUpdatedScore();
     updateScoreBoard(score);
-  }
-  if (game.isOver()) {
-    drawGameOverPanel();
-    clearInterval(intervalId);
-    return;
   }
   moveAndDrawSnake(game.snake);
   moveAndDrawSnake(game.ghostSnake);
