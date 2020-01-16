@@ -35,11 +35,11 @@ class Snake {
     this.positions.unshift(this.previousTail);
   }
 
-  hasTouchedBoundary({ noOfCols, noOfRows }) {
+  hasTouchedBoundary({ NUM_OF_COLS, NUM_OF_ROWS }) {
     const touchedVerticalBoundary =
-      this.head[0] < 1 || this.head[0] >= noOfCols - 1;
+      this.head[0] < 1 || this.head[0] >= NUM_OF_COLS - 1;
     const touchedHorizontalBoundary =
-      this.head[1] < 1 || this.head[1] >= noOfRows - 1;
+      this.head[1] < 1 || this.head[1] >= NUM_OF_ROWS - 1;
     return touchedHorizontalBoundary || touchedVerticalBoundary;
   }
 
